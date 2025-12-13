@@ -1,7 +1,7 @@
 const https = require('https');
 
 // ========== CONFIGURAÇÕES ==========
-const PIXEL_ID = process.env.FACEBOOK_PIXEL_ID || '873965848422635';
+const PIXEL_ID = process.env.FACEBOOK_PIXEL_ID || '1901472974093663';
 const ACCESS_TOKEN = process.env.FACEBOOK_ACCESS_TOKEN;
 const TEST_EVENT_CODE = process.env.FACEBOOK_TEST_EVENT_CODE || null;
 
