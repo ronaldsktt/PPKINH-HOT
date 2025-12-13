@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acesso Exclusivo VIP</title>
+
+  <!-- Google Fonts - Roboto -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+  <!-- Facebook Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
+    n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '873965848422635');
+    fbq('track', 'PageView');
+  </script>
+
+  <style>
+    * { 
+      margin: 0; 
+      padding: 0; 
+      box-sizing: border-box; 
+    }
+    
+    body {
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background-color: #000000;
+      background-image: 
+        repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,255,.03) 35px, rgba(255,255,255,.03) 70px),
+        repeating-linear-gradient(-45deg, transparent, transparent 35px, rgba(255,255,255,.02) 35px, rgba(255,255,255,.02) 70px);
+      color: #ffffff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+    
+    /* Pattern de fundo com animais */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-image: 
+        url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><g opacity="0.05" stroke="%23ffffff" fill="none" stroke-width="1.5"><circle cx="20" cy="20" r="8"/><path d="M50 30 L55 25 L60 30 L55 35 Z"/><circle cx="80" cy="25" r="6"/><path d="M15 60 Q20 55, 25 60 T35 60"/><circle cx="70" cy="65" r="7"/><path d="M45 80 L50 75 L55 80"/></g></svg>');
+      background-size: 100px 100px;
+      opacity: 0.4;
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    /* Header com logo do Telegram */
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 24px;
+      background: rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .telegram-icon {
+      width: 32px;
+      height: 32px;
+      background: #2AABEE;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .telegram-icon svg {
+      width: 18px;
+      height: 18px;
+      fill: white;
+    }
+    
+    .header-title {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #ffffff;
+    }
+    
+    .download-btn {
+      background: #2AABEE;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Efeito de brilho no botão do header */
+    .download-btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .download-btn:hover::before {
+      left: 100%;
+    }
+    
+    .download-btn:hover {
+      opacity: 0.85;
+    }
+    
+    .container {
+      max-width: 440px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+      margin-top: 80px;
+    }
+    
+    /* Card principal estilo Telegram */
+    .main-card {
+      background: rgba(30, 30, 30, 0.95);
+      backdrop-filter: blur(20px);
+      border-radius: 16px;
+      padding: 48px 32px 40px 32px;
+      text-align: center;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
+    }
+    
+    /* Foto circular com badge online */
+    .profile-section {
+      position: relative;
+      display: inline-block;
+      margin-bottom: 20px;
+    }
+    
+    .circle {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Badge verde "online" - MOVIDO PARA DIREITA E MAIS PARA DENTRO */
+    .online-badge {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      width: 24px;
+      height: 24px;
+      background: #4CAF50;
+      border-radius: 50%;
+      border: 3px solid rgba(30, 30, 30, 0.95);
+    }
+    
+    /* Nome com emojis */
+    .profile-name {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    
+    .name-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .online-dot {
+      width: 12px;
+      height: 12px;
+      background: #4CAF50;
+      border-radius: 50%;
+    }
+    
+    .titulo {
+      font-size: 1.5rem;
+      font-weight: 500;
+      color: #ffffff;
+      margin: 0;
+    }
+    
+    .emojis {
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    
+    /* Username */
+    .username {
+      font-size: 0.9375rem;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 8px;
+    }
+    
+    /* Contador de usuários mensais */
+    .subscribers {
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 28px;
+    }
+    
+    /* Botão principal */
+    .cta-button {
+      display: block;
+      width: 100%;
+      background: #2AABEE;
+      color: #ffffff;
+      border: none;
+      padding: 14px 32px;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      font-family: 'Roboto', sans-serif;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    /* Efeito de brilho no botão */
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+    
+    .cta-button:hover::before {
+      left: 100%;
+    }
+    
+    .cta-button:hover {
+      background: #229ED9;
+    }
+    
+    .cta-button:active {
+      transform: scale(0.98);
+    }
+    
+    /* Texto inferior */
+    .bottom-text {
+      margin-top: 20px;
+      font-size: 0.875rem;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.5;
+    }
+    
+    .bottom-text .highlight {
+      color: #4CAF50;
+    }
+    
+    /* Responsive Desktop */
+    @media (min-width: 769px) {
+      .container {
+        max-width: 480px;
+      }
+      
+      .main-card {
+        padding: 60px 48px 48px 48px;
+      }
+      
+      .circle {
+        width: 160px;
+        height: 160px;
+      }
+      
+      .online-badge {
+        width: 28px;
+        height: 28px;
+        bottom: 10px;
+        right: 10px;
+      }
+    }
+    
+    /* Responsive Mobile */
+    @media (max-width: 768px) {
+      .header {
+        padding: 12px 16px;
+      }
+      
+      .telegram-icon {
+        width: 28px;
+        height: 28px;
+      }
+      
+      .telegram-icon svg {
+        width: 16px;
+        height: 16px;
+      }
+      
+      .header-title {
+        font-size: 1.125rem;
+      }
+      
+      .download-btn {
+        padding: 6px 16px;
+        font-size: 0.8125rem;
+      }
+      
+      .container {
+        margin-top: 70px;
+      }
+      
+      .main-card {
+        padding: 40px 24px 32px 24px;
+      }
+      
+      .circle {
+        width: 130px;
+        height: 130px;
+      }
+      
+      .online-badge {
+        width: 22px;
+        height: 22px;
+        bottom: 6px;
+        right: 6px;
+      }
+      
+      .titulo {
+        font-size: 1.375rem;
+      }
+      
+      .username {
+        font-size: 0.875rem;
+        margin-bottom: 6px;
+      }
+      
+      .subscribers {
+        font-size: 0.8125rem;
+        margin-bottom: 24px;
+      }
+      
+      .cta-button {
+        font-size: 0.875rem;
+        padding: 12px 28px;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .header-title {
+        font-size: 1rem;
+      }
+      
+      .main-card {
+        padding: 36px 20px 28px 20px;
+        border-radius: 12px;
+      }
+      
+      .circle {
+        width: 120px;
+        height: 120px;
+      }
+      
+      .titulo {
+        font-size: 1.25rem;
+      }
+    }
+    
+    /* Animações */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .main-card {
+      animation: fadeIn 0.5s ease-out;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-left">
+      <div class="telegram-icon">
+        <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <path d="M94.9,149.4l-6.7,69.6c0.9,0,1.3-0.3,1.8-0.8l43.2-40.4l89.6,64.2c16.4,8.9,28,4.2,32.4-14.7L303.8,42.4 c5.4-20.4-7.3-29.7-20.9-24.4L3.7,115.7c-19.3,7.5-19,17.8-3.3,22.5l67.8,20.6l157.3-96.5c7.4-4.8,14.2-2.1,8.6,2.7"/>
+        </svg>
+      </div>
+      <span class="header-title">Telegram</span>
+    </div>
+    <a href="https://apextry.com/go/novinhaz" class="download-btn" id="headerDownloadBtn">DOWNLOAD</a>
+  </div>
+
+  <!-- Container principal -->
+  <div class="container">
+    <div class="main-card">
+      <!-- Foto com badge online -->
+      <div class="profile-section">
+        <div class="circle">
+          <img src="https://i.postimg.cc/RhGMvg71/image.jpg" alt="Foto" id="fotoCirculo">
+        </div>
+        <div class="online-badge"></div>
+      </div>
+      
+      <!-- Nome com badge online e emojis -->
+      <div class="profile-name">
+        <div class="name-badge">
+          <div class="online-dot"></div>
+          <h1 class="titulo" id="titulo">Novinha do velhinho💕🔥</h1>
+        </div>
+      </div>
+      
+      <!-- Username -->
+      <!-- Contador de usuários -->
+      <p class="subscribers">50.959 usuários mensais</p>
+      
+      <!-- Botão principal -->
+      <a href="https://apextry.com/go/novinhaz" class="cta-button" id="ctaButton">INICIAR BOT</a>
+      
+      <!-- Texto inferior -->
+      <p class="bottom-text">
+        <span class="highlight">●</span> Se você tem Telegram, pode iniciar<br>
+        <span class="highlight" id="botName">Novinha do velhinho</span> ❤️ 🔥 agora mesmo.
+      </p>
+    </div>
+  </div>
+
+  <!-- Config ANTES do script principal -->
+  <script src="./config.js"></script>
+
+  <script>
+    // ========== CAPTURA FBC/FBP ==========
+    function capturarFBC() {
+      const params = new URLSearchParams(window.location.search);
+      const fbclid = params.get('fbclid');
+      
+      if (fbclid) {
+        const fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+        document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`;
+        localStorage.setItem('_fbc', fbc);
+        console.log('✅ FBC capturado:', fbc);
+        return fbc;
+      } else {
+        console.warn('⚠️ fbclid não encontrado na URL');
+        return null;
+      }
+    }
+    
+    function capturarFBP() {
+      let fbp = document.cookie.split(';').find(c => c.trim().startsWith('_fbp='));
+      if (!fbp) {
+        fbp = 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substr(2, 9);
+        document.cookie = `_fbp=${fbp}; path=/; max-age=7776000; SameSite=Lax`;
+        localStorage.setItem('_fbp', fbp);
+        console.log('✅ FBP criado:', fbp);
+      } else {
+        fbp = fbp.split('=')[1];
+        localStorage.setItem('_fbp', fbp);
+        console.log('✅ FBP encontrado:', fbp);
+      }
+      return fbp;
+    }
+    
+    // Executa captura
+    const fbc = capturarFBC();
+    const fbp = capturarFBP();
+    
+    // ========== PEGA PRODUTO ==========
+    const produto = getProduto();
+    
+    console.log('🎯 Produto:', produto.nome);
+    console.log('🤖 Bot URL:', produto.bot_url);
+    console.log('📊 FBC:', fbc ? '✓' : '✗');
+    console.log('📊 FBP:', fbp ? '✓' : '✓');
+    
+    // ========== PERSONALIZA ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      // Muda cores do botão
+      const style = document.createElement('style');
+      style.textContent = `
+        .cta-button {
+          background: ${produto.cor_primaria};
+        }
+        .cta-button:hover {
+          background: ${produto.cor_secundaria};
+        }
+        .download-btn {
+          background: ${produto.cor_primaria};
+        }
+        .download-btn:hover {
+          background: ${produto.cor_secundaria};
+        }
+      `;
+      document.head.appendChild(style);
+      
+      // Muda foto
+      document.getElementById('fotoCirculo').src = produto.foto;
+      
+      // Muda título
+      document.getElementById('titulo').textContent = produto.nome;
+      
+      // Muda username (pega da URL do bot)
+      const botUrl = produto.bot_url;
+      const botUsername = botUrl.match(/t\.me\/([^?]+)/)?.[1] || 'bot';
+      document.getElementById('username').textContent = '@' + botUsername;
+      
+      // Muda nome do bot no texto inferior
+      document.getElementById('botName').textContent = produto.nome;
+      
+      // Configura botões (links já estão definidos no HTML)
+      const ctaButton = document.getElementById('ctaButton');
+      const headerDownloadBtn = document.getElementById('headerDownloadBtn');
+      
+      // Evento de clique no botão principal
+      ctaButton.addEventListener('click', function(e) {
+        console.log('👆 Usuário clicou no botão INICIAR BOT');
+        
+        // Envia evento Lead pro Facebook
+        try {
+          fbq('track', 'Lead', {
+            content_name: produto.nome,
+            content_category: new URLSearchParams(window.location.search).get('utm_campaign') || 'bia'
+          });
+          console.log('✅ Evento Lead enviado ao Facebook');
+        } catch (error) {
+          console.error('❌ Erro ao enviar Lead:', error);
+        }
+      });
+      
+      // Evento de clique no botão do header
+      headerDownloadBtn.addEventListener('click', function(e) {
+        console.log('👆 Usuário clicou no botão DOWNLOAD do header');
+      });
+    });
+  </script>
+
+  <noscript>
+    <p>Por favor, habilite o JavaScript para continuar.</p>
+    <a href="https://t.me/BiaaMirandaa_bot?start=adsbiamiranda">Clique aqui para acessar</a>
+  </noscript>
+</body>
+</html>

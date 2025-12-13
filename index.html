@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Redirecionando...</title>
+
+  <!-- Facebook Pixel -->
+  <script>
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){
+    n.callMethod ? n.callMethod.apply(n,arguments) : n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '873965848422635');
+    fbq('track', 'PageView');
+  </script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: linear-gradient(180deg, #ff4da6 0%, #6a0dad 100%);
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .container {
+      text-align: center;
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+    }
+    .circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.2);
+      margin: 0 auto 1.5rem auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+    .circle img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .text {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+    .progress-container {
+      width: 100%;
+      height: 12px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .progress-bar {
+      width: 0%;
+      height: 100%;
+      background: linear-gradient(90deg, #FFD700, #FF8C00);
+      border-radius: 8px;
+      transition: width 0.1s linear;
+    }
+    .percent {
+      margin-top: 0.7rem;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #FFD700;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="circle">
+      <img src="https://i.postimg.cc/RhGMvg71/image.jpg" alt="Imagem" id="fotoCirculo">
+    </div>
+    <p class="text" id="textoRedir">Redirecionando para o telegram... 🥰</p>
+    <div class="progress-container">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="percent" id="percent">0%</div>
+  </div>
+
+  <!-- Config ANTES do script principal -->
+  <script src="./config.js"></script>
+
+  <script>
+    // ========== CAPTURA FBC ==========
+    function capturarFBC() {
+      const params = new URLSearchParams(window.location.search);
+      const fbclid = params.get('fbclid');
+      
+      if (fbclid) {
+        const fbc = 'fb.1.' + Date.now() + '.' + fbclid;
+        document.cookie = `_fbc=${fbc}; path=/; max-age=7776000; SameSite=Lax`;
+        localStorage.setItem('_fbc', fbc);
+        console.log('✅ FBC capturado e salvo:', fbc);
+        return fbc;
+      } else {
+        console.warn('⚠️ fbclid não encontrado na URL');
+        return null;
+      }
+    }
+    
+    function capturarFBP() {
+      let fbp = document.cookie.split(';').find(c => c.trim().startsWith('_fbp='));
+      if (!fbp) {
+        fbp = 'fb.1.' + Date.now() + '.' + Math.random().toString(36).substr(2, 9);
+        document.cookie = `_fbp=${fbp}; path=/; max-age=7776000; SameSite=Lax`;
+        localStorage.setItem('_fbp', fbp);
+        console.log('✅ FBP criado:', fbp);
+      } else {
+        fbp = fbp.split('=')[1];
+        localStorage.setItem('_fbp', fbp);
+        console.log('✅ FBP encontrado:', fbp);
+      }
+      return fbp;
+    }
+    
+    // Executa captura
+    const fbc = capturarFBC();
+    const fbp = capturarFBP();
+    
+    // ========== PEGA PRODUTO ==========
+    const produto = getProduto();
+    
+    console.log('🎯 Produto:', produto.nome);
+    console.log('🤖 Bot URL:', produto.bot_url);
+    console.log('📊 FBC:', fbc ? '✓' : '✗');
+    console.log('📊 FBP:', fbp ? '✓' : '✓');
+    
+    const REDIRECT_URL = produto.bot_url;
+    const DELAY = 4000;
+    
+    // ========== PERSONALIZA ==========
+    document.addEventListener('DOMContentLoaded', function() {
+      // Muda cores
+      document.body.style.background = 
+        `linear-gradient(180deg, ${produto.cor_primaria} 0%, ${produto.cor_secundaria} 100%)`;
+      
+      // Muda foto
+      document.getElementById('fotoCirculo').src = produto.foto;
+      
+      // Muda texto
+      document.getElementById('textoRedir').textContent = 
+        `Redirecionando para ${produto.nome}... 🥰`;
+      
+      // ========== PROGRESS BAR ==========
+      let progress = 0;
+      const progressBar = document.getElementById("progress-bar");
+      const percentText = document.getElementById("percent");
+      const interval = DELAY / 100;
+
+      const timer = setInterval(() => {
+        progress++;
+        progressBar.style.width = progress + "%";
+        percentText.textContent = progress + "%";
+
+        if (progress >= 100) {
+          clearInterval(timer);
+          setTimeout(() => {
+            console.log('🚀 Redirecionando para:', REDIRECT_URL);
+            window.location.href = REDIRECT_URL;
+          }, 300);
+        }
+      }, interval);
+    });
+  </script>
+
+  <noscript>
+    <meta http-equiv="refresh" content="4;url=https://t.me/BiaaMirandaa_bot?start=adsbiamiranda">
+  </noscript>
+</body>
+</html>
