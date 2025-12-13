@@ -13,11 +13,11 @@ const PRODUTOS = {
     cor_secundaria: '#c44569'
   },
 
-    'leticia': {
-    nome: 'Novinha do velhinho💕🔥',
-    bot_url: 'https://apextry.com/go/novinhaz',
+    'pipokinha': {
+    nome: 'MC Pipokinha',
+    bot_url: 'https://apextry.com/go/ppokinha',
     grupo_vip: 'https://t.me/+g0eZXl5W87xkYjc8',
-    foto: './imagens/01.png',
+    foto: '.fotoprincipal.jpg',
     cor_primaria: '#229ED9',
     cor_secundaria: '#229ED9'
   },
