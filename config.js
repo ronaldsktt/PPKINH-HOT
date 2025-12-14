@@ -17,7 +17,7 @@ const PRODUTOS = {
     nome: 'MC Pipokinha',
     bot_url: 'https://apextry.com/go/ppokinha',
     grupo_vip: 'https://t.me/+Ec7pEKzkvyU5Y2I5',
-    foto: '.fotoprincipal.jpg',
+    foto: './fotoprincipal.jpg',
     cor_primaria: '#229ED9',
     cor_secundaria: '#229ED9'
   },
